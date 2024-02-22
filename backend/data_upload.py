@@ -3,6 +3,7 @@
 import json
 import psycopg2
 from sqlalchemy import create_engine
+import uuid
 
 def read_json_file(file_path):
     '''Function to read the json files, introduce the file path'''
@@ -40,14 +41,14 @@ def upload_subscriptions_to_database(data, cursor, conn):
     insert_sql = """
         INSERT INTO "subscription" (id, description, category, timestamp, public_id, user_id)
         VALUES (%s, %s, %s, %s, %s, %s)"""
-    
+    #public_id_default = uuid.uuid4().hex
     for record in data:
         values = (
             record.get('id', None),
             record.get('description', None),
             record.get('category', None),
             record.get('timestamp', None),
-            record.get('public_id', None),
+            record.get('public_id', uuid.uuid4().hex),
             record.get('user_id', None)
         )
     
