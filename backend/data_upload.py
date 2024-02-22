@@ -41,7 +41,7 @@ def upload_subscriptions_to_database(data, cursor, conn):
     insert_sql = """
         INSERT INTO "subscription" (id, description, category, timestamp, public_id, user_id)
         VALUES (%s, %s, %s, %s, %s, %s)"""
-    #public_id_default = uuid.uuid4().hex
+
     for record in data:
         values = (
             record.get('id', None),
