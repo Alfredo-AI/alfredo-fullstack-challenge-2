@@ -39,17 +39,18 @@ def upload_users_to_database(data, cursor, conn):
 def upload_subscriptions_to_database(data, cursor, conn):
     '''Function to upload subscriptions to the local database'''
     insert_sql = """
-        INSERT INTO "subscription" (id, description, category, timestamp, public_id, user_id)
+        INSERT INTO "subscription" (id, date_init, date_end, status, user_id, reason)
         VALUES (%s, %s, %s, %s, %s, %s)"""
 
     for record in data:
         values = (
             record.get('id', None),
-            record.get('description', None),
-            record.get('category', None),
-            record.get('timestamp', None),
-            record.get('public_id', uuid.uuid4().hex),
-            record.get('user_id', None)
+            record.get('date_init', None),
+            record.get('date_end', None),
+            record.get('status', None),
+            record.get('user_id', None),
+            record.get('reason', None)
+
         )
     
         cursor.execute(insert_sql, values)
@@ -62,22 +63,11 @@ user = read_json_file('/home/dinis/Desktop/alfredo-fullstack-challenge-2/data/us
 
 
 #upload the json files directly to a local database
-#POSTGRES_USER=admin -e POSTGRES_PASSWORD=thisisatest -e POSTGRES_DB=alfredo -d postgres
-#"postgresql+asyncpg://admin:thisisatest@127.0.0.1:5432/alfredo"
-
-
-#conn_string = "postgresql+asyncpg://admin:thisisatest@127.0.0.1:5432/alfredo"
-#db = create_engine(conn_string)
-#conn = db.connect()
 
 conn = psycopg2.connect("postgresql://admin:thisisatest@127.0.0.1:5432/alfredo")
 cursor = conn.cursor()
 
+upload_users_to_database(user, cursor, conn)
 upload_subscriptions_to_database(subscription, cursor, conn)
 
-upload_users_to_database(user, cursor, conn)
-
 conn.close()
-#df.to_sql('data', con=conn, if_exists = 'replace', index=False)
-#upload_files_to_database('subscriptions', subscription)
-#upload_files_to_database('users', user)

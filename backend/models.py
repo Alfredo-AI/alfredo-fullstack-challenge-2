@@ -38,19 +38,13 @@ class User(Base):
         return f"<User(email='{self.email}', name='{self.name}', account_type='{self.account_type}')>"
 
 
-class Complaint(Base):
+class Subscription(Base):
     id = Column(Integer, primary_key=True)
-    description = Column(String)
-    category = Column(String)
-    timestamp = Column(DateTime, default=datetime.utcnow)
-    public_id = Column(
-        String,
-        unique=True,
-        nullable=False,
-        default=lambda: uuid4().hex
-    )
-    
+    date_init = Column(DateTime, default=datetime.utcnow)
+    date_end = Column(DateTime, default=datetime.utcnow)
+    status = Column(String)
     user_id = Column(Integer, ForeignKey('user.id'), index=True)
-
+    reason = Column(String)
+    
     def __repr__(self):
-        return f"<Complaint(id='{self.id}', description='{self.description}')>"
+        return f"<Subscription(id='{self.id}', reason='{self.reason}')>"
