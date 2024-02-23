@@ -2,8 +2,6 @@
 
 import json
 import psycopg2
-from sqlalchemy import create_engine
-import uuid
 
 def read_json_file(file_path):
     '''Function to read the json files, introduce the file path'''
