@@ -37,20 +37,24 @@ async def cancellation_reasons(time_window = None):
         time_window = "None"
         initial_time = current_date - relativedelta(years=2000) 
     
-    #'2021-02-02' 
-    
     insert_sql = """
         SELECT reason, COUNT(status) FROM "subscription" 
         WHERE status = 'canceled' AND 
-        date_end < current_date AND date_end > initial_time
+        date_end < current_date AND date_end > %s
         GROUP BY reason"""
-    cursor.execute(insert_sql)
+    start_time = (initial_time, )
+    cursor.execute(insert_sql, start_time)
 
     data_set = {'Page': 'Cancellation Reasons', 'Message': f'Successfully got the request for {time_window}',
                 'Current time' : f'{current_date}', 'Initial Time': f'{initial_time}'}
-    
+
     user_table = cursor.fetchall()
+    test_schema=[]
+
+    for key, value in user_table:
+        test_schema += {f"cancellationReason: {key}, userCount: {value}"}
+        #aux += {'cancelationReason': f'{key}', 'userCount': f'{value}'}
     json_dump = json.dumps(data_set)
 
-    return json_dump, user_table
+    return json_dump, test_schema
     #return{"time_window": time_window}
