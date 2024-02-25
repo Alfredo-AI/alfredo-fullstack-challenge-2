@@ -15,13 +15,9 @@ cursor = conn.cursor()
 
 @app.get("/complaints")
 async def get_complaints():
-    #data_set = {'Page': 'Complaints', 'Message': 'Successfully loaded the Complaints page'}
-    #json_dump = json.dumps(data_set)
-
-    #return json_dump
     return []
 
-@app.get('/cancellation_reasons') #, methods = ['GET']
+@app.get('/cancellation_reasons')
 async def cancellation_reasons(time_window = None):
 
     current_date = date.today()
@@ -45,16 +41,43 @@ async def cancellation_reasons(time_window = None):
     start_time = (initial_time, )
     cursor.execute(insert_sql, start_time)
 
-    data_set = {'Page': 'Cancellation Reasons', 'Message': f'Successfully got the request for {time_window}',
+    # display an informative message
+    data_set = {'Message': f'Successfully got the request for time_window={time_window}',
                 'Current time' : f'{current_date}', 'Initial Time': f'{initial_time}'}
 
     user_table = cursor.fetchall()
     test_schema=[]
 
-    for key, value in user_table:
-        test_schema += {f"cancellationReason: {key}, userCount: {value}"}
-        #aux += {'cancelationReason': f'{key}', 'userCount': f'{value}'}
+    # assign the cancellation reason; 
+    # this can also be done using a dictionary with the possible cancellation reasons
+    for key, user_count in user_table:
+        if key == "card":
+            reason = "Problemas ao renovar/atualizar"
+        elif key == "features":
+            reason = "Falta de features"
+        elif key == "competitor":
+            reason = "Prefiro outras soluções disponíveis no mercado"
+        elif key == "price":
+            reason = "O preço é demasiado alto"
+        elif key == "value":
+            reason = "Não vejo valor suficiente pelo preço"
+        elif key == "avm":
+            reason = "Pouca precisão nas avaliações de imóveis"
+        elif key == "metasearch":
+            reason = "Cobertura insuficiente no metasearch"
+        elif key == "customization":
+            reason = "Poucas opções de personalização"
+        elif key == "team":
+            reason = "A equipa não utiliza a plataforma"
+        elif key == "closing":
+            reason = "Mudança de atividade/fecho de empresa"
+        elif key == "sold":
+            reason = "Não ter acesso a dados de transação"
+        else:
+            reason = "Outra"
+
+        test_schema += {f'"cancellationReason": {reason}, "userCount": {user_count}'}
+
     json_dump = json.dumps(data_set)
 
-    return json_dump, test_schema
-    #return{"time_window": time_window}
+    return json_dump, test_schema # returning test_schema instead of user_table
