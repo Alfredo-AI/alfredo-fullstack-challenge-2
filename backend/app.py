@@ -6,12 +6,36 @@ from dateutil.relativedelta import relativedelta
 import json, time
 import psycopg2
 
+from fastapi.middleware.cors import CORSMiddleware
+
 app = FastAPI(title = "Alfredo Fullstack Challenge")
 
+origins = [
+    "http://localhost:8000",
+    "http://localhost:3000",
+    "http://localhost:3000/",
+    "http://localhost:8000/cancellation_reasons?time_window",
+    "http://localhost:8000/cancellation_reasons?time_window=1year",
+    "http://localhost:8000/",
+    "http://localhost:8000/cancellation_reasons",
+    "http://localhost:8000/cancellation_reasons/",
+]
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 conn = psycopg2.connect("postgresql://admin:thisisatest@127.0.0.1:5432/alfredo")
 cursor = conn.cursor()
 
+#var express = require('express')
+#var cors = require('cors')
+#var app = express()
+
+#app.use(cors())
 
 @app.get("/complaints")
 async def get_complaints():
