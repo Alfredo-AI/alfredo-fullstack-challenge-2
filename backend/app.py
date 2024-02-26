@@ -42,8 +42,8 @@ async def cancellation_reasons(time_window = None):
     cursor.execute(insert_sql, start_time)
 
     # display an informative message
-    data_set = {'Message': f'Successfully got the request for time_window={time_window}',
-                'Current time' : f'{current_date}', 'Initial Time': f'{initial_time}'}
+    #data_set = {'Message': f'Successfully got the request for time_window={time_window}',
+                #'Current time' : f'{current_date}', 'Initial Time': f'{initial_time}'}
 
     user_table = cursor.fetchall()
     test_schema=[]
@@ -78,6 +78,6 @@ async def cancellation_reasons(time_window = None):
 
         test_schema += {f'"cancellationReason": {reason}, "userCount": {user_count}'}
 
-    json_dump = json.dumps(data_set)
+    #json_dump = json.dumps(data_set)
 
-    return json_dump, test_schema # returning test_schema instead of user_table
+    return test_schema # json_dump,  # returning test_schema instead of user_table
