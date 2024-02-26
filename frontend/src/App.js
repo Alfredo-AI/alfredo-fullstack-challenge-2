@@ -1,7 +1,7 @@
 import React from "react";
 import Grid from "@mui/material/Grid";
 
-//import { PieChatrt, Pie, Sector, Cell, Tooltip, BarChart, XAxis, YAxis, Legend, CartesianGrid, Bar } from "recharts";
+import { PieChatrt, Pie, Sector, Cell, Tooltip, BarChart, XAxis, YAxis, Legend, CartesianGrid, Bar } from "recharts";
 
 import { useState, useEffect } from "react";
 //import { ThemeContext } from "@emotion/react";
@@ -20,7 +20,7 @@ import { useState, useEffect } from "react";
 
 const App = () => {
   const url = 'http://localhost:8000/cancellation_reasons';
-  
+  const [data, setData] = useState([])
   const requestOptions = {
     method: 'GET'
   };
@@ -29,8 +29,14 @@ const App = () => {
   .then(response => { console.log(response)
     return response.json();
     })
-  .then(data => {console.log(data)})
+  .then(data => {console.log(data)
+    setData(data);})
   .then(error => {console.log(error)})
+
+  return(
+    <div>{data}</div>
+  )
+
 };
 
 /*const DataFetcher = () => {

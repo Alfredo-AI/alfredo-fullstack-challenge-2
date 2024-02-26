@@ -10,16 +10,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(title = "Alfredo Fullstack Challenge")
 
-origins = [
-    "http://localhost:8000",
-    "http://localhost:3000",
-    "http://localhost:3000/",
-    "http://localhost:8000/cancellation_reasons?time_window",
-    "http://localhost:8000/cancellation_reasons?time_window=1year",
-    "http://localhost:8000/",
-    "http://localhost:8000/cancellation_reasons",
-    "http://localhost:8000/cancellation_reasons/",
-]
+origins = ["*"]
 
 app.add_middleware(
     CORSMiddleware,
