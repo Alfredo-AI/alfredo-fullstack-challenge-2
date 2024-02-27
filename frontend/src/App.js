@@ -18,8 +18,109 @@ import { useState, useEffect } from "react";
 
 //let params = (new URL(url_aux)).searchParams //gets values in front of "?"
 
+/*import Defaultopt from "./default";
+import Year from "./1year";
+import Month from "./1year";
+import Week from "./1year";*/
 
 const App = () => {
+    const url = 'http://localhost:8000/cancellation_reasons';
+    const [data, setData] = useState([])
+    const [selected, setSelected] = useState('') 
+    const handleChange=(e)=>{
+      console.log(e.target.value)
+      setSelected(e.target.value)
+    }
+    const requestOptions = {
+      method: 'GET'
+    };
+  
+    useEffect(() => {
+      fetch(`http://localhost:8000/cancellation_reasons?time_window=${selected}`, {method: 'GET'}, {mode: 'cors'})
+    .then(response => { console.log(response)
+      return response.json();
+      })
+    .then(data => {console.log(data)
+      setData(data);})
+    .then(error => {console.log(error)})
+    },[selected])
+  
+    return (
+      <div className="App">
+        <select value={selected} onChange={(e)=>handleChange(e)}>
+        <option>default</option>
+        <option>1year</option>
+        <option>1month</option>
+        <option>1week</option>
+        </select>
+        
+        <h1>Cancellation Reasons</h1>
+        <BarChart
+            width={1000}
+            height={500}
+            data={data}
+            margin={{
+              top: 5,
+              right: 30,
+              left: 20,
+              bottom: 5,
+            }}
+            barSize={20}
+          >
+            <XAxis dataKey="cancellationReason" scale="point" padding={{ left: 10, right: 10 }} />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <CartesianGrid strokeDasharray="3 3" />
+            <Bar dataKey="userCount" fill="#8884d8" background={{ fill: '#eee' }} />
+          </BarChart>
+      </div>
+      
+    );
+  
+  };
+
+  export default App;
+
+
+/*function ChangeWindowSelect(){
+  const [selected, setSelected] = useState('default')
+
+  const handleChange=(e)=>{
+    console.log(e.target.value)
+    setSelected(e.target.value)
+  }
+
+  return(
+    <div>
+      <select value={selected} onChange={(e)=>handleChange(e)}>
+        <option>default</option>
+        <option>1 year</option>
+        <option>1 month</option>
+        <option>1 week</option>
+      </select>
+      {selected === "default"?<Defaultopt/>:"" }
+      {selected === "1 year"?<Year/>:"" }
+      {selected === "1 month"?<Month/>:"" }
+      {selected === "1 week"?<Week/>:"" }
+    </div>
+  )
+}*/
+
+//export default ChangeWindowSelect();
+
+
+/*      
+        {selected == "1 year"?<year/>:"year" }
+      {selected == "1 month"?<month/>:"month" }
+      {selected == "1 week"?<week/>:"week" }
+      */ 
+
+
+
+
+
+/*const App = () => {
   const url = 'http://localhost:8000/cancellation_reasons';
   const [data, setData] = useState([])
   const requestOptions = {
@@ -61,7 +162,10 @@ const App = () => {
     
   );
 
-};
+};*/
+
+//export default App;
+
 
 /*const DataFetcher = () => {
   const [data, setData] = useState([]);
@@ -138,6 +242,3 @@ return (
     
   );
 };*/
-
-
-export default App;
