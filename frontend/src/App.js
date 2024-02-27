@@ -1,9 +1,10 @@
 import React from "react";
 import Grid from "@mui/material/Grid";
 
-import { PieChatrt, Pie, Sector, Cell, Tooltip, BarChart, XAxis, YAxis, Legend, CartesianGrid, Bar } from "recharts";
+import { Tooltip, BarChart, XAxis, YAxis, Legend, CartesianGrid, Bar } from "recharts";
 
 import { useState, useEffect } from "react";
+
 //import { ThemeContext } from "@emotion/react";
 
 // urls to access the data 
