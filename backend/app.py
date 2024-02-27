@@ -62,7 +62,7 @@ async def cancellation_reasons(time_window = None):
 
     user_table = cursor.fetchall()
     test_schema=[]
-
+    aux_to_return = []
     # assign the cancellation reason; 
     # this can also be done using a dictionary with the possible cancellation reasons
     for key, user_count in user_table:
@@ -91,8 +91,10 @@ async def cancellation_reasons(time_window = None):
         else:
             reason = "Outra"
 
+        aux = {"cancellationReason": reason, "userCount": user_count}
+        aux_to_return.append(aux)
         test_schema += {f'"cancellationReason": {reason}, "userCount": {user_count}'}
 
     #json_dump = json.dumps(data_set)
 
-    return test_schema # json_dump,  # returning test_schema instead of user_table
+    return aux_to_return # json_dump,  # returning test_schema instead of user_table
