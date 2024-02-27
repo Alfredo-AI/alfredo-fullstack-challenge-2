@@ -57,7 +57,6 @@ def upload_subscriptions_to_database(data, cursor, conn):
 #read JSON files located in the /data directory
 subscription = read_json_file('/home/dinis/Desktop/alfredo-fullstack-challenge-2/data/subscriptions.json')
 user = read_json_file('/home/dinis/Desktop/alfredo-fullstack-challenge-2/data/users.json')
-#print(subscription)
 
 
 #upload the json files directly to a local database

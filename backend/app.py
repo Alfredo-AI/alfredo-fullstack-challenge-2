@@ -2,10 +2,7 @@ from fastapi import FastAPI
 from flask import *
 from datetime import datetime, date
 from dateutil.relativedelta import relativedelta
-
-import json, time
 import psycopg2
-
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(title = "Alfredo Fullstack Challenge")
@@ -21,16 +18,6 @@ app.add_middleware(
 )
 conn = psycopg2.connect("postgresql://admin:thisisatest@127.0.0.1:5432/alfredo")
 cursor = conn.cursor()
-
-#var express = require('express')
-#var cors = require('cors')
-#var app = express()
-
-#app.use(cors())
-
-@app.get("/complaints")
-async def get_complaints():
-    return []
 
 @app.get('/cancellation_reasons')
 async def cancellation_reasons(time_window = None):
@@ -56,15 +43,12 @@ async def cancellation_reasons(time_window = None):
     start_time = (initial_time, )
     cursor.execute(insert_sql, start_time)
 
-    # display an informative message
-    #data_set = {'Message': f'Successfully got the request for time_window={time_window}',
-                #'Current time' : f'{current_date}', 'Initial Time': f'{initial_time}'}
-
     user_table = cursor.fetchall()
     test_schema=[]
     aux_to_return = []
     # assign the cancellation reason; 
     # this can also be done using a dictionary with the possible cancellation reasons
+    #if there are an extensive list of cancellation reasons
     for key, user_count in user_table:
         if key == "card":
             reason = "Problemas ao renovar/atualizar"
@@ -95,6 +79,4 @@ async def cancellation_reasons(time_window = None):
         aux_to_return.append(aux)
         test_schema += {f'"cancellationReason": {reason}, "userCount": {user_count}'}
 
-    #json_dump = json.dumps(data_set)
-
-    return aux_to_return # json_dump,  # returning test_schema instead of user_table
+    return aux_to_return
